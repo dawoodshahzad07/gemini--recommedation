@@ -30,26 +30,26 @@ const Main = () => {
                         <div className="greet">
 
                         <p>
-    <span className="animated-gradient-text">Hello, Dev.</span>
+    <span className="animated-gradient-text">Hello, Student!</span>
   </p>
                             <p>How can i help you today?</p>
 
                         </div>
                         <div className="cards">
-                            <div className="card" onClick={() => handleCardClick("Tell me a joke.")}>
-                                <p>Tell me a joke.</p>
+                            <div className="card" onClick={() => handleCardClick("Suggest Some best universities abroad in 1000$ budget.")}>
+                                <p>Suggest Some best universities abroad in 1000$ budget.</p>
                                 <img src={assets.compass_icon} alt="" />
                             </div>
-                            <div className="card" onClick={() => handleCardClick("Recommend a book/movie/TV show.")}>
-                                <p>Recommend a book/movie/TV show.</p>
+                            <div className="card" onClick={() => handleCardClick("Best Universities in USA")}>
+                                <p>Best Universities in USA</p>
                                 <img src={assets.bulb_icon} alt="" />
                             </div>
-                            <div className="card" onClick={() => handleCardClick("What's the weather like today?")}>
-                                <p>What's the weather like today?</p>
+                            <div className="card" onClick={() => handleCardClick("Best Country for Study")}>
+                                <p>Best Country for Study</p>
                                 <img src={assets.message_icon} alt="" />
                             </div>
-                            <div className="card" onClick={() => handleCardClick("suggest beautiful places in karachi")}>
-                                <p>suggest beautiful places</p>
+                            <div className="card" onClick={() => handleCardClick("Best Tech related University ")}>
+                                <p>Best Tech related University </p>
                                 <img src={assets.code_icon} alt="" />
                             </div>
                         </div>
