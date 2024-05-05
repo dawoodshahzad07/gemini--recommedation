@@ -8,9 +8,9 @@ const MODEL_NAME = "gemini-1.0-pro";
 const API_KEY = "AIzaSyCKlg3V-0mV1hGRQNj7ft1XntgTorfUK_0";
 
 async function runChat(prompt) {
-  // Define keywords or patterns related to study abroad university-related data
-  const studyAbroadKeywords = ["study", "abroad", "university", "education", "overseas"];
-  
+//   // Define keywords or patterns related to study abroad university-related data
+//   cnst studyAbroadKeywords = ["study", "abroad","universities","university", "studies" , "college","education", "overseas"];
+const studyAbroadKeywords = ["study", "abroad", "universities", "university", "studies", "college", "education", "overseas", "international", "exchange", "foreign", "learning", "culture", "language", "experience"];
   // Convert prompt to lowercase for case-insensitive matching
   const lowerCasePrompt = prompt.toLowerCase();
 
@@ -59,7 +59,7 @@ async function runChat(prompt) {
       history: [],
   });
 
-  const result = await chat.sendMessage(prompt);
+  const result = await chat.sendMessage(prompt+"be very concise and in points");
   const response = result.response;
   console.log(response.text());
   return response.text();

@@ -6,125 +6,111 @@ import { useContext } from 'react';
 
 const Main = () => {
     const [selectedCard, setSelectedCard] = useState(null);
-    const [showInitialContent, setShowInitialContent] = useState(true); // State to track if initial content is shown
+    const [showInitialContent, setShowInitialContent] = useState(true);
+    const [scholarshipSelected, setScholarshipSelected] = useState(false);
+    const [paidOpportunitiesSelected, setPaidOpportunitiesSelected] = useState(false);
 
     const { onSent, recentPrompt, showResult, loading, resultData, setInput, input, handleCardClick } = useContext(Context);
 
     useEffect(() => {
         if (showResult) {
-            setShowInitialContent(false); // Hide initial content when result is shown
+            setShowInitialContent(false);
         }
     }, [showResult]);
-
     const handleSend = async () => {
-        await onSent(input);
-        setShowInitialContent(false); // Hide initial content after sending the input
+        // Logic to recommend based on selected checkboxes
+        if (scholarshipSelected) {
+            const scholarshipMessage = `${input} but first provides the  scholarship data for those universities `;
+            await onSent(scholarshipMessage);
+            setShowInitialContent(true);
+        } else if (paidOpportunitiesSelected) {
+            // Provide recommendations for paid opportunities
+            const paidOpportunitiesSelected = `${input} also provides the  paid Opportunities data for those universities `;
+            await onSent(paidOpportunitiesSelected);
+            setShowInitialContent(true);
+            // Update the chatbot response accordingly
+        } else {
+            // No specific action required for other cases
+            await onSent(input);
+            setShowInitialContent(true);
+        }
     };
-
+    
     const handleCardSelection = (prompt) => {
         handleCardClick(prompt);
         setSelectedCard(prompt);
-        setShowInitialContent(true); // Show initial content when a card is selected
+        setShowInitialContent(true);
     };
 
     return (
         <div className='main'>
             <div className="nav">
-                <p>Gemini</p>
+                <p>Aizen</p>
             </div>
             <div className="main-container">
-                {showInitialContent && !showResult ? (
-                    <>
-                        <div className="greet">
-                            <p>
-                                <span className="animated-gradient-text">Hello, Student!</span>
-                            </p>
-                            <p>How can I help you today?</p>
+                <div className="greet">
+                    <p>
+                        <span className="animated-gradient-text ">Hello, Student.</span>
+                    </p>
+                    <p>Lets's Explore Opportunities!</p>
+                </div>
+                <div className="search-box">
+                    <input onChange={(e) => setInput(e.target.value)} value={input} type="text" placeholder='Enter a prompt here' />
+                    <div>
+                        
+                         
+                        <label>
+                            <input type="checkbox" checked={scholarshipSelected} onChange={() => setScholarshipSelected(!scholarshipSelected)} />
+                            Scholarship
+                        </label>
+                        <label>
+                            <input type="checkbox" checked={paidOpportunitiesSelected} onChange={() => setPaidOpportunitiesSelected(!paidOpportunitiesSelected)} />
+                            Paid Opportunities
+                        </label>
+                        {input && <img onClick={handleSend} src={assets.send_icon} alt="" />}
+                    </div>
+                </div>
+                {showInitialContent && (
+                    <div className="cards">
+                        <div className="card" onClick={() => handleCardSelection("Suggest Some best universities abroad in less budget.")}>
+                            <p>Suggest Some best universities abroad in less budget.</p>
                         </div>
-                        <div className="search-box">
-                            <input onChange={(e) => setInput(e.target.value)} value={input} type="text" placeholder='Enter a prompt here' />
-                            <div>
-                                <img src={assets.gallery_icon} alt="" />
-                                <img src={assets.mic_icon} alt="" />
-                                {input ? <img onClick={handleSend} src={assets.send_icon} alt="" /> : null}
-                            </div>
+                        <div className="card" onClick={() => handleCardSelection("Best Universities that  offering computer science programs ")}>
+                            <p>Best Universities offering computer science programs </p>
                         </div>
-                        <div className="cards">
-                            <div className="card" onClick={() => handleCardSelection("Suggest Some best universities abroad in 1000$ budget.")}>
-                                <p>Suggest Some best universities abroad in 1000$ budget.</p>
-                            </div>
-                            <div className="card" onClick={() => handleCardSelection("Best Universities in USA")}>
-                                <p>Best Universities in USA</p>
-                            </div>
-                            <div className="card" onClick={() => handleCardSelection("Best Country for Study")}>
-                                <p>Best Country for Study</p>
-                            </div>
-                            <div className="card" onClick={() => handleCardSelection("Best Tech related University ")}>
-                                <p>Best Tech related University </p>
-                            </div>
+                        <div className="card" onClick={() => handleCardSelection("Best Country for  Study  for free education ")}>
+                            <p>Best Country Study for free education </p>
                         </div>
-                    </>
-                ) : (
-                    <>
-                        <div className='result'>
-                            <div className="result-title">
-                                <img src={assets.user_icon} alt="" />
-                                <p>{recentPrompt}</p>
-                            </div>
-                            <div className="result-data">
-                                <img src={assets.gemini_icon} alt="" />
-                                {loading ? (
-                                    <div className="loader">
-                                        <hr />
-                                        <hr />
-                                        <hr />
-                                    </div>
-                                ) : (
-                                    <p dangerouslySetInnerHTML={{ __html: resultData }}></p>
-                                )}
-                            </div>
+                        <div className="card" onClick={() => handleCardSelection("Best Technology related University in Europe ")}>
+                            <p>Best Technology  related University in Europe </p>
                         </div>
-                        <div className="main-bottom">
-                            <p className="bottom-info">
-                                Gemini may display inaccurate info, including about people, so double-check its responses. Your privacy and Gemini Apps
-                            </p>
+                    </div>
+                )}  
+                {showResult && (
+                    <div className='result'>
+                        <div className="result-title">
+                            <img src={assets.user_icon} alt="" />
+                            <p>{recentPrompt}</p>
                         </div>
-                        {/* Display the cards only when the specific prompt is selected */}
-                        {selectedCard === "Suggest Some best universities abroad in 1000$ budget." && (
-                            <div className="cards">
-                                <div className="card" onClick={() => handleCardSelection("Suggest Some best universities abroad in 1000$ budget.")}>
-                                    <p>Suggest Some best universities abroad in 1000$ budget.</p>
+                        <div className="result-data">
+                            {/* <img src={assets.gemini_icon} alt="" /> */}
+                            {loading ? (
+                                <div className="loader">
+                                    <hr />
+                                    <hr />
+                                    <hr />
                                 </div>
-                                <div className="card" onClick={() => handleCardSelection("Best Universities in USA")}>
-                                    <p>Best Universities in USA</p>
-                                </div>
-                                <div className="card" onClick={() => handleCardSelection("Best Country for Study")}>
-                                    <p>Best Country for Study</p>
-                                </div>
-                                <div className="card" onClick={() => handleCardSelection("Best Tech related University ")}>
-                                    <p>Best Tech related University </p>
-                                </div>
-                            </div>
-                        )}
-                                           {selectedCard === "Best Universities in USA" && (
-                            <div className="cards">
-                                <div className="card" onClick={() => handleCardSelection("Suggest Some best universities abroad in 1000$ budget.")}>
-                                    <p>Suggest Some best universities abroad in 1000$ budget.</p>
-                                </div>
-                                <div className="card" onClick={() => handleCardSelection("Best ")}>
-                                    <p>Best</p>
-                                </div>
-                                <div className="card" onClick={() => handleCardSelection("Best Country for Study")}>
-                                    <p>Best Country for Study</p>
-                                </div>
-                                <div className="card" onClick={() => handleCardSelection("Best Tech related University ")}>
-                                    <p>Best Tech related University </p>
-                                </div>
-                            </div>
-                        )}
-
-                    </>
+                            ) : (
+                                <p dangerouslySetInnerHTML={{ __html: resultData }}></p>
+                            )}
+                        </div>
+                    </div>
                 )}
+                <div className="main-bottom">
+                    <p className="bottom-info">
+                        
+                    </p>
+                </div>
             </div>
         </div>
     );
